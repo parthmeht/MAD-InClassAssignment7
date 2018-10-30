@@ -1,4 +1,4 @@
-package com.parth.android.inclassassignemnt7;
+package com.parth.android.inclassassignment7;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
