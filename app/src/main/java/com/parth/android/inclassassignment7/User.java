@@ -13,14 +13,14 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private Integer studentId;
-    private Object avatar;
+    private Integer avatarImageValue;
     private String department;
 
-    public User(String firstName, String lastName, Integer studentId, Object avatar, String department) {
+    public User(String firstName, String lastName, Integer studentId, Integer avatarImageValue, String department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.studentId = studentId;
-        this.avatar = avatar;
+        this.avatarImageValue = avatarImageValue;
         this.department = department;
     }
 
@@ -48,12 +48,12 @@ public class User implements Serializable {
         this.studentId = studentId;
     }
 
-    public Object getAvatar() {
-        return avatar;
+    public Integer getAvatarImageValue() {
+        return avatarImageValue;
     }
 
-    public void setAvatar(Object avatar) {
-        this.avatar = avatar;
+    public void setAvatarImageValue(Integer avatarImageValue) {
+        this.avatarImageValue = avatarImageValue;
     }
 
     public String getDepartment() {
@@ -70,7 +70,7 @@ public class User implements Serializable {
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", studentId=" + studentId +
-                ", avatar=" + avatar +
+                ", avatarImageValue=" + avatarImageValue +
                 ", department='" + department + '\'' +
                 '}';
     }
