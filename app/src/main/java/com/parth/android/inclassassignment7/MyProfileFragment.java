@@ -1,7 +1,6 @@
 package com.parth.android.inclassassignment7;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -13,13 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import java.io.Serializable;
+import static android.support.v4.content.ContextCompat.getDrawable;
 
 
 public class MyProfileFragment extends Fragment {
@@ -30,9 +28,12 @@ public class MyProfileFragment extends Fragment {
     private EditText firstName, lastName, studentId;
     private RadioGroup departmentGroup;
     private ImageView avatarImage;
-    private Integer avatarImageValue;
+    private int avatarImageValue;
     private User user;
-
+    public static final String FLAG = "flag";
+    public static final String IMAGEVALUE = "imageValue";
+    public static final String USER = "user";
+    private String flag;
     public MyProfileFragment() {
 
     }
@@ -78,12 +79,46 @@ public class MyProfileFragment extends Fragment {
                     int radioButtonID = departmentGroup.getCheckedRadioButtonId();
                     RadioButton radioButton = departmentGroup.findViewById(radioButtonID);
                     Log.d("Radio", "radioButton.getText().toString()" + radioButton.getText().toString());
-                    user = new User(firstName.getText().toString(), lastName.getText().toString(), Integer.parseInt(studentId.getText().toString()), avatarImageValue, radioButton.getText().toString());
+                    if (flag.equalsIgnoreCase("edit")){
+                        user.setFirstName(firstName.getText().toString());
+                        user.setLastName(lastName.getText().toString());
+                        user.setStudentId(studentId.getText().toString());
+                        user.setDepartment(radioButton.getText().toString());
+                    }else {
+                        user = new User(firstName.getText().toString(), lastName.getText().toString(), studentId.getText().toString(), avatarImageValue, radioButton.getText().toString());
+                    }
                     Log.d("Demo",user.toString());
                     mListener.goToDisplayAvatar(user);
                 }
             }
         });
+
+        if (getArguments()!=null){
+            flag = this.getArguments().getString(FLAG);
+            if (flag.equalsIgnoreCase("profileImage")){
+                if (this.getArguments().getInt(IMAGEVALUE)!=0){
+                    avatarImage.setImageResource(this.getArguments().getInt(IMAGEVALUE));
+                    avatarImageValue = this.getArguments().getInt(IMAGEVALUE);
+                }
+            } else if (flag.equalsIgnoreCase("edit")){
+                user = (User) getArguments().getSerializable(USER);
+                if (user!=null){
+                    firstName.setText(user.getFirstName());
+                    lastName.setText(user.getLastName());
+                    studentId.setText(user.getStudentId());
+                    avatarImage.setImageResource(user.getAvatarImageValue());
+                    if (user.getDepartment().equalsIgnoreCase("CS")){
+                        departmentGroup.check(R.id.radioButtonCS);
+                    } else if (user.getDepartment().equalsIgnoreCase("SIS")){
+                        departmentGroup.check(R.id.radioButtonSIS);
+                    } else if (user.getDepartment().equalsIgnoreCase("BIO")){
+                        departmentGroup.check(R.id.radioButtonBIO);
+                    } else if (user.getDepartment().equalsIgnoreCase("Other")){
+                        departmentGroup.check(R.id.radioButtonOther);
+                    }
+                }
+            }
+        }
 
         return view;
     }
@@ -101,15 +136,11 @@ public class MyProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mListener.getImageId()!=0){
-            avatarImage.setImageResource(mListener.getImageId());
-            avatarImageValue = mListener.getImageId();
-        }
+
     }
 
     public interface MyProfileFragmentListener {
         void goToSelectAvatar();
-        int getImageId();
         void goToDisplayAvatar(User user);
     }
 }

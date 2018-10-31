@@ -12,11 +12,11 @@ import java.io.Serializable;
 public class User implements Serializable {
     private String firstName;
     private String lastName;
-    private Integer studentId;
-    private Integer avatarImageValue;
+    private String studentId;
+    private int avatarImageValue;
     private String department;
 
-    public User(String firstName, String lastName, Integer studentId, Integer avatarImageValue, String department) {
+    public User(String firstName, String lastName, String studentId, int avatarImageValue, String department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.studentId = studentId;
@@ -40,19 +40,19 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public Integer getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(Integer studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 
-    public Integer getAvatarImageValue() {
+    public int getAvatarImageValue() {
         return avatarImageValue;
     }
 
-    public void setAvatarImageValue(Integer avatarImageValue) {
+    public void setAvatarImageValue(int avatarImageValue) {
         this.avatarImageValue = avatarImageValue;
     }
 
@@ -62,16 +62,5 @@ public class User implements Serializable {
 
     public void setDepartment(String department) {
         this.department = department;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", studentId=" + studentId +
-                ", avatarImageValue=" + avatarImageValue +
-                ", department='" + department + '\'' +
-                '}';
     }
 }

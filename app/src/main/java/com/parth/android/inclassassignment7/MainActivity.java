@@ -36,16 +36,16 @@ public class MainActivity extends AppCompatActivity implements MyProfileFragment
                 .commit();
     }
 
-    @Override
-    public int getImageId() {
-        return selectedProfile;
-    }
 
     @Override
     public void goToDisplayAvatar(User user) {
         this.user = user;
+        DisplayProfileFragment displayProfileFragment = new DisplayProfileFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(DisplayProfileFragment.USER, user);
+        displayProfileFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new DisplayProfileFragment(), "DisplayProfileFragment")
+                .replace(R.id.container, displayProfileFragment, "DisplayProfileFragment")
                 .addToBackStack(null)
                 .commit();
     }
@@ -54,14 +54,28 @@ public class MainActivity extends AppCompatActivity implements MyProfileFragment
     public void goToMyProfile(int id) {
         selectedProfile = id;
         Log.d("Demo","Selected id = "+selectedProfile);
+        MyProfileFragment myProfileFragment = new MyProfileFragment();
+        Bundle args = new Bundle();
+        args.putString(MyProfileFragment.FLAG, "profileImage");
+        args.putInt(MyProfileFragment.IMAGEVALUE,id);
+        myProfileFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new MyProfileFragment(), "MyProfileFragment")
+                .replace(R.id.container, myProfileFragment, "MyProfileFragment")
                 .addToBackStack(null)
                 .commit();
     }
 
     @Override
-    public User getUserObject() {
-        return user;
+    public void goToProfileScreen() {
+        MyProfileFragment myProfileFragment = new MyProfileFragment();
+        Bundle args = new Bundle();
+        args.putString(MyProfileFragment.FLAG, "edit");
+        args.putSerializable(MyProfileFragment.USER,user);
+        myProfileFragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, myProfileFragment, "MyProfileFragment")
+                .addToBackStack(null)
+                .commit();
     }
 }

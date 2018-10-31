@@ -20,6 +20,8 @@ public class DisplayProfileFragment extends Fragment {
     private TextView studentId;
     private TextView department;
     private ImageView avatarImage;
+    public static final String USER = "user";
+
     public DisplayProfileFragment() {
         // Required empty public constructor
     }
@@ -29,16 +31,26 @@ public class DisplayProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_display_profile, container, false);
-        user = mListener.getUserObject();
+
         name = view.findViewById(R.id.textViewNameValue);
         buttonEdit = view.findViewById(R.id.buttonEdit);
         studentId = view.findViewById(R.id.textViewStudentIdValue);
         department = view.findViewById(R.id.textViewDepatmentValue);
         avatarImage = view.findViewById(R.id.imageViewDisplay);
-        name.setText(user.getFirstName() + " " +user.getLastName());
-        studentId.setText(user.getStudentId().toString());
-        department.setText(user.getDepartment());
-        avatarImage.setImageResource(user.getAvatarImageValue());
+        if (getArguments()!=null){
+            user = (User) getArguments().getSerializable(USER);
+            name.setText(user.getFirstName() + " " +user.getLastName());
+            studentId.setText(user.getStudentId());
+            department.setText(user.getDepartment());
+            avatarImage.setImageResource(user.getAvatarImageValue());
+        }
+
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.goToProfileScreen();
+            }
+        });
         return view;
     }
 
@@ -54,7 +66,6 @@ public class DisplayProfileFragment extends Fragment {
 
 
     public interface DisplayProfileFragmentListener {
-        // TODO: Update argument type and name
-        User getUserObject();
+        void goToProfileScreen();
     }
 }
