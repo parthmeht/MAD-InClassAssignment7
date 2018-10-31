@@ -81,6 +81,7 @@ public class SelectAvatarFragment extends Fragment {
         }
     }
 
+
     public interface SelectAvatarFragmentListener {
         // TODO: Update argument type and name
         void goToMyProfile(int id);

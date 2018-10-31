@@ -17,9 +17,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import static android.support.v4.content.ContextCompat.getDrawable;
-
-
 public class MyProfileFragment extends Fragment {
 
 
@@ -71,22 +68,15 @@ public class MyProfileFragment extends Fragment {
                     firstName.setError("Enter the First Name");
                 } else if (lastName.getText().toString() == null || lastName.getText().toString().matches("")) {
                     lastName.setError("Enter the Last Name");
-                } else if (studentId.getText().toString() == null || studentId.getText().toString().matches("")) {
-                    studentId.setError("Enter the Student Id");
+                } else if (studentId.getText().toString() == null || studentId.getText().toString().matches("") || studentId.getText().toString().length()!=9) {
+                    studentId.setError("Enter the Student Id of 9 digits only");
                 } else if (departmentGroup.getCheckedRadioButtonId() == -1) {
                     Toast.makeText(departmentGroup.getContext(), "Select a radio button", Toast.LENGTH_LONG).show();
                 } else {
                     int radioButtonID = departmentGroup.getCheckedRadioButtonId();
                     RadioButton radioButton = departmentGroup.findViewById(radioButtonID);
                     Log.d("Radio", "radioButton.getText().toString()" + radioButton.getText().toString());
-                    if (flag.equalsIgnoreCase("edit")){
-                        user.setFirstName(firstName.getText().toString());
-                        user.setLastName(lastName.getText().toString());
-                        user.setStudentId(studentId.getText().toString());
-                        user.setDepartment(radioButton.getText().toString());
-                    }else {
-                        user = new User(firstName.getText().toString(), lastName.getText().toString(), studentId.getText().toString(), avatarImageValue, radioButton.getText().toString());
-                    }
+                    user = new User(firstName.getText().toString(), lastName.getText().toString(), studentId.getText().toString(), avatarImageValue, radioButton.getText().toString());
                     Log.d("Demo",user.toString());
                     mListener.goToDisplayAvatar(user);
                 }
@@ -94,30 +84,11 @@ public class MyProfileFragment extends Fragment {
         });
 
         if (getArguments()!=null){
-            flag = this.getArguments().getString(FLAG);
-            if (flag.equalsIgnoreCase("profileImage")){
                 if (this.getArguments().getInt(IMAGEVALUE)!=0){
                     avatarImage.setImageResource(this.getArguments().getInt(IMAGEVALUE));
                     avatarImageValue = this.getArguments().getInt(IMAGEVALUE);
                 }
-            } else if (flag.equalsIgnoreCase("edit")){
-                user = (User) getArguments().getSerializable(USER);
-                if (user!=null){
-                    firstName.setText(user.getFirstName());
-                    lastName.setText(user.getLastName());
-                    studentId.setText(user.getStudentId());
-                    avatarImage.setImageResource(user.getAvatarImageValue());
-                    if (user.getDepartment().equalsIgnoreCase("CS")){
-                        departmentGroup.check(R.id.radioButtonCS);
-                    } else if (user.getDepartment().equalsIgnoreCase("SIS")){
-                        departmentGroup.check(R.id.radioButtonSIS);
-                    } else if (user.getDepartment().equalsIgnoreCase("BIO")){
-                        departmentGroup.check(R.id.radioButtonBIO);
-                    } else if (user.getDepartment().equalsIgnoreCase("Other")){
-                        departmentGroup.check(R.id.radioButtonOther);
-                    }
-                }
-            }
+
         }
 
         return view;

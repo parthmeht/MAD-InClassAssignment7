@@ -1,5 +1,6 @@
 package com.parth.android.inclassassignment7;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements MyProfileFragment
 
     @Override
     public void goToSelectAvatar() {
+        setTitle("Select Avatar");
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, new SelectAvatarFragment(), "SelectAvatarFragment")
                 .addToBackStack(null)
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements MyProfileFragment
 
     @Override
     public void goToDisplayAvatar(User user) {
+        setTitle("Display My Profile");
         this.user = user;
         DisplayProfileFragment displayProfileFragment = new DisplayProfileFragment();
         Bundle args = new Bundle();
@@ -52,11 +55,14 @@ public class MainActivity extends AppCompatActivity implements MyProfileFragment
 
     @Override
     public void goToMyProfile(int id) {
+        setTitle("My Profile");
         selectedProfile = id;
         Log.d("Demo","Selected id = "+selectedProfile);
-        MyProfileFragment myProfileFragment = new MyProfileFragment();
+        MyProfileFragment myProfileFragment = (MyProfileFragment) getSupportFragmentManager().findFragmentByTag("MyProfileFragment");
+        if (myProfileFragment == null) {
+            myProfileFragment = new MyProfileFragment();
+        }
         Bundle args = new Bundle();
-        args.putString(MyProfileFragment.FLAG, "profileImage");
         args.putInt(MyProfileFragment.IMAGEVALUE,id);
         myProfileFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
@@ -67,10 +73,13 @@ public class MainActivity extends AppCompatActivity implements MyProfileFragment
 
     @Override
     public void goToProfileScreen() {
-        MyProfileFragment myProfileFragment = new MyProfileFragment();
+        setTitle("My Profile");
+        MyProfileFragment myProfileFragment = (MyProfileFragment) getSupportFragmentManager().findFragmentByTag("MyProfileFragment");
+        if (myProfileFragment == null) {
+            myProfileFragment = new MyProfileFragment();
+        }
         Bundle args = new Bundle();
-        args.putString(MyProfileFragment.FLAG, "edit");
-        args.putSerializable(MyProfileFragment.USER,user);
+        args.putInt(MyProfileFragment.IMAGEVALUE,selectedProfile);
         myProfileFragment.setArguments(args);
 
         getSupportFragmentManager().beginTransaction()
